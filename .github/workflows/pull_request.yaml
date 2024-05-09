@@ -1,0 +1,11 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+jobs:
+  assemble:
+    uses: ./.github/workflows/assemble.yml
+
+  test:
+    uses: ./.github/workflows/test.yml

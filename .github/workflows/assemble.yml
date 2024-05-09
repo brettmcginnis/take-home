@@ -1,0 +1,17 @@
+name: Assemble
+
+on:
+  workflow_call:
+
+jobs:
+  assembleAndroidTest:
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/android-sdk:34
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./gradlew assemble
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apks
+          path: ./**/*.apk
+          if-no-files-found: error

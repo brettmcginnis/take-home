@@ -1,0 +1,12 @@
+name: develop
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  assemble:
+    uses: ./.github/workflows/assemble.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
