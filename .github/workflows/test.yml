@@ -1,0 +1,12 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/android-sdk:34
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./gradlew test
