@@ -4,11 +4,12 @@ on:
   workflow_call:
 
 jobs:
-  assembleAndroidTest:
+  assemble:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
     steps:
       - uses: actions/checkout@v4
+      - run: echo 'token=${{ secrets.GH_TOKEN }}' > github.properties
       - run: ./gradlew assemble
       - uses: actions/upload-artifact@v4
         with:

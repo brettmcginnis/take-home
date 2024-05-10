@@ -1,6 +1,10 @@
+import java.io.FileInputStream
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -47,23 +51,56 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        val token = getGithubToken()
+
+        debug {
+            buildConfigField("String", "GITHUB_TOKEN", token)
+        }
+        release {
+            buildConfigField("String", "GITHUB_TOKEN", token)
+        }
+    }
+}
+
+fun getGithubToken(): String = with(rootProject.file("github.properties")) {
+    val githubProperties = Properties()
+    githubProperties.load(FileInputStream(this))
+    return "\"${githubProperties.getProperty("token")}\""
 }
 
 dependencies {
-
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(platform(libs.androidx.compose.bom))
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
 }
