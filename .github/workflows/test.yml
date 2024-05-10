@@ -9,4 +9,5 @@ jobs:
     container: ghcr.io/cirruslabs/android-sdk:34
     steps:
       - uses: actions/checkout@v4
+      - run: echo 'token=${{ secrets.GH_TOKEN }}' > github.properties
       - run: ./gradlew test

@@ -6,6 +6,8 @@ on:
 jobs:
   assemble:
     uses: ./.github/workflows/assemble.yml
+    secrets: inherit
 
   test:
     uses: ./.github/workflows/test.yml
+    secrets: inherit
